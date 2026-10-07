@@ -1642,7 +1642,7 @@ document
 
 
 // ページを開いたときに一覧表示
-loadManga();
+
 // =====================================
 // 漫画タイトル検索
 // =====================================
@@ -1694,57 +1694,151 @@ document
 
     }
   );
-  // =====================================
-// Supabaseログインの接続テスト
+// =====================================
+// Supabaseログイン
 // =====================================
 
-async function testSupabaseLogin() {
+// ログイン画面を表示
+function showLoginArea() {
+
+  document
+    .getElementById("login-area")
+    .style.display = "block";
+
+  document
+    .getElementById("app-area")
+    .style.display = "none";
+}
+
+
+// 漫画棚を表示
+async function showAppArea() {
+
+  document
+    .getElementById("login-area")
+    .style.display = "none";
+
+  document
+    .getElementById("app-area")
+    .style.display = "block";
+
+  await loadManga();
+}
+
+
+// ログインする
+async function login() {
 
   const email =
-    prompt("漫画棚のログイン用メールアドレスを入力してください");
-
-  if (!email) {
-    return;
-  }
-
+    document
+      .getElementById("login-email")
+      .value
+      .trim();
 
   const password =
-    prompt("漫画棚のパスワードを入力してください");
+    document
+      .getElementById("login-password")
+      .value;
 
-  if (!password) {
+  const message =
+    document.getElementById(
+      "login-message"
+    );
+
+
+  if (
+    email === "" ||
+    password === ""
+  ) {
+
+    message.textContent =
+      "メールアドレスとパスワードを入力してください。";
+
     return;
   }
 
 
-  const { data, error } =
-    await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
+  message.textContent =
+    "ログイン中...";
+
+
+  const { error } =
+    await supabaseClient.auth
+      .signInWithPassword({
+        email: email,
+        password: password
+      });
 
 
   if (error) {
 
     console.error(error);
 
-    alert(
-      "❌ Supabaseへのログインに失敗しました。\n\n" +
-      error.message
-    );
+    message.textContent =
+      "メールアドレスまたはパスワードが違います。";
 
     return;
   }
 
 
-  alert(
-    "🎉 Supabaseへのログインに成功しました！"
-  );
+  message.textContent = "";
 
+  await showAppArea();
 }
 
 
-// 接続テストを実行
-testSupabaseLogin();
+// ログインボタン
+document
+  .getElementById("login-button")
+  .addEventListener(
+    "click",
+    login
+  );
+
+
+// パスワード欄でEnterを押してもログイン
+document
+  .getElementById("login-password")
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (event.key === "Enter") {
+        login();
+      }
+
+    }
+  );
+
+
+// =====================================
+// ページを開いたときのログイン確認
+// =====================================
+
+async function checkLogin() {
+
+  const {
+    data: { session }
+  } =
+    await supabaseClient.auth
+      .getSession();
+
+
+  if (session) {
+
+    // すでにログイン済み
+    await showAppArea();
+
+  } else {
+
+    // まだログインしていない
+    showLoginArea();
+
+  }
+}
+
+
+checkLogin();
 // =====================================
 // Supabaseから漫画データを読むテスト
 // =====================================
