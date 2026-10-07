@@ -25,7 +25,79 @@
   </header>
 
 
-  <main>
+  <!-- =========================
+       ログイン画面
+  ========================== -->
+
+  <main
+    id="login-area"
+    style="
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+    "
+  >
+
+    <section>
+
+      <h2>
+        🔐 ログイン
+      </h2>
+
+      <label for="login-email">
+        メールアドレス
+      </label>
+
+      <input
+        type="email"
+        id="login-email"
+        placeholder="メールアドレス"
+        autocomplete="username"
+      >
+
+
+      <label for="login-password">
+        パスワード
+      </label>
+
+      <input
+        type="password"
+        id="login-password"
+        placeholder="パスワード"
+        autocomplete="current-password"
+      >
+
+
+      <button
+        type="button"
+        id="login-button"
+      >
+        ログイン
+      </button>
+
+      <p
+        id="login-message"
+        style="
+          margin-top: 15px;
+          text-align: center;
+        "
+      >
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       漫画棚
+  ========================== -->
+
+  <main
+    id="app-area"
+    style="display: none;"
+  >
+
     <!-- 漫画タイトル検索 -->
     <section class="search-area">
 
@@ -40,6 +112,7 @@
       >
 
     </section>
+
 
     <!-- バーコード登録 -->
     <section>
@@ -281,10 +354,6 @@
       >
 
 
-      <!--
-        次の段階でこのボタンを
-        本当に保存できるようにする
-      -->
       <button
         type="button"
         id="save-edit-button"
@@ -313,11 +382,16 @@
   >
   </script>
 
-<!-- Supabaseを使うためのJavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- 自分たちのJavaScript -->
-<script src="script.js"></script>
+  <!-- Supabaseを使うためのJavaScript -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  >
+  </script>
+
+
+  <!-- 自分たちのJavaScript -->
+  <script src="script.js"></script>
 
 
 </body>
