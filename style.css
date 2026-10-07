@@ -1,0 +1,111 @@
+/* ページ全体 */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f7f5f2;
+  color: #333;
+}
+
+
+/* ヘッダー */
+header {
+  background-color: #ffffff;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+
+/* メイン部分 */
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+/* 入力欄 */
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  margin-bottom: 12px;
+}
+
+
+/* 入力欄の名前 */
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+
+/* ボタン */
+button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* 見出し */
+h2 {
+  margin-top: 30px;
+  font-size: 20px;
+}
+
+
+/* 最近登録した漫画 */
+#manga-list {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  color: #777;
+}
+
+
+/* 漫画1冊ごとの表示 */
+#manga-list > div {
+  padding: 10px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+#manga-list > div:last-child {
+  border-bottom: none;
+}
+
+#manga-list h3 {
+  color: #333;
+}
+/* 登録画面は最初は隠しておく */
+.register-form {
+  display: none;
+}
+/* 登録内容を編集するボタン */
+.edit-button {
+  margin-top: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  background-color: #666;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>うちの漫画棚</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+</head>
+
+
+<body>
+
+  <header>
+    <h1>📚 うちの漫画棚</h1>
+  </header>
+
+
+  <main>
+    <!-- 漫画タイトル検索 -->
+    <section class="search-area">
+
+      <h2>
+        🔍 漫画を検索
+      </h2>
+
+      <input
+        type="text"
+        id="search-input"
+        placeholder="漫画タイトルを入力"
+      >
+
+    </section>
+
+    <!-- バーコード登録 -->
+    <section>
+
+      <button onclick="showRegisterForm()">
+        📷 バーコードで登録
+      </button>
+
+    </section>
+
+
+    <!-- 新規登録フォーム -->
+    <section
+      id="register-form"
+      class="register-form"
+    >
+
+      <h2>漫画を登録</h2>
+
+      <div id="reader"></div>
+
+
+      <label for="title">
+        漫画タイトル
+      </label>
+
+      <input
+        type="text"
+        id="title"
+        placeholder="例：ONE PIECE"
+      >
+
+
+      <label for="volume">
+        巻数
+      </label>
+
+      <input
+        type="number"
+        id="volume"
+        placeholder="例：45"
+      >
+
+
+      <label for="isbn">
+        ISBN
+      </label>
+
+      <input
+        type="text"
+        id="isbn"
+        placeholder="例：9784088824238"
+      >
+
+
+      <button
+        type="button"
+        onclick="getBookInfo()"
+      >
+        🔍 ISBNから本の情報を取得
+      </button>
+
+
+      <label for="cover-file">
+        表紙画像
+      </label>
+
+      <input
+        type="file"
+        id="cover-file"
+        accept="image/*"
+        onchange="previewCover()"
+      >
+
+
+      <div
+        id="cover-area"
+        style="
+          text-align: center;
+          margin-top: 20px;
+          margin-bottom: 20px;
+        "
+      >
+
+        <img
+          id="cover-image"
+          src=""
+          alt="本の表紙"
+          style="
+            display: none;
+            max-width: 180px;
+            max-height: 260px;
+            border-radius: 8px;
+          "
+        >
+
+      </div>
+
+
+      <button onclick="registerManga()">
+        登録する
+      </button>
+
+    </section>
+
+
+    <!-- 漫画一覧 -->
+    <section>
+
+      <h2>
+        最近登録した漫画
+      </h2>
+
+      <div id="manga-list">
+
+        <p>
+          まだ漫画が登録されていません。
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- 登録内容一覧 -->
+    <section
+      id="edit-area"
+      style="
+        display: none;
+        margin-top: 30px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+      "
+    >
+
+      <h2 id="edit-title">
+        登録内容
+      </h2>
+
+      <div id="edit-volume-list">
+      </div>
+
+
+      <button
+        type="button"
+        id="close-edit-button"
+      >
+        閉じる
+      </button>
+
+    </section>
+
+
+    <!-- =========================
+         1冊の編集フォーム
+    ========================== -->
+
+    <section
+      id="book-edit-form"
+      style="
+        display: none;
+        margin-top: 30px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+      "
+    >
+
+      <h2>
+        ✏️ 登録内容を修正
+      </h2>
+
+
+      <label for="edit-book-title">
+        漫画タイトル
+      </label>
+
+      <input
+        type="text"
+        id="edit-book-title"
+      >
+
+
+      <label for="edit-book-volume">
+        巻数
+      </label>
+
+      <input
+        type="number"
+        id="edit-book-volume"
+      >
+
+
+      <label for="edit-book-isbn">
+        ISBN
+      </label>
+
+      <input
+        type="text"
+        id="edit-book-isbn"
+      >
+
+
+      <p>
+        現在の表紙
+      </p>
+
+      <div
+        style="
+          text-align: center;
+          margin: 20px 0;
+        "
+      >
+
+        <img
+          id="edit-book-cover"
+          src=""
+          alt="現在の表紙"
+          style="
+            display: none;
+            max-width: 180px;
+            max-height: 260px;
+            border-radius: 8px;
+          "
+        >
+
+      </div>
+
+
+      <label for="edit-cover-file">
+        表紙を変更する場合はこちら
+      </label>
+
+      <input
+        type="file"
+        id="edit-cover-file"
+        accept="image/*"
+      >
+
+
+      <!--
+        次の段階でこのボタンを
+        本当に保存できるようにする
+      -->
+      <button
+        type="button"
+        id="save-edit-button"
+        disabled
+      >
+        💾 変更を保存
+      </button>
+
+
+      <button
+        type="button"
+        id="cancel-edit-button"
+      >
+        キャンセル
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- バーコード読み取り用 -->
+  <script
+    src="https://unpkg.com/html5-qrcode"
+    type="text/javascript"
+  >
+  </script>
+
+<!-- Supabaseを使うためのJavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- 自分たちのJavaScript -->
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
